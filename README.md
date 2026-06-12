@@ -87,11 +87,11 @@ Response:
 
 ## How it works
 
-The REST endpoint `POST /jobs` can be used to trigger a PDF file check. When the endpoint is called, the method `create` is called in the controller. The Spring Boot REST Controller [o.d.c.rest.JobsController](src/main/java/org/dm/conveyor/rest/JobsController.java) contains the methods that are executed when the endpoints are called. The controller is only a facade and passes the calls on to the [o.d.c.service.CheckJobService](src/main/java/org/dm/conveyor/service/CheckJobService.java). 
+The REST endpoint `POST /jobs` can be used to trigger a PDF file check. When the endpoint is called, the method `create` is called in the controller. The Spring Boot REST Controller [o.d.c.rest.JobsController](./src/main/java/org/dm/conveyor/rest/JobController.java) contains the methods that are executed when the endpoints are called. The controller is only a facade and passes the calls on to the [o.d.c.service.CheckJobService](src/main/java/org/dm/conveyor/service/JobService.java). 
 
-If a new check is requested, the controller calls the method `createJob` in the `JobService`. The check is not started directly. The check is only triggered by the Kafka event. This has the advantage that the caller of the REST endpoint is not blocked and has to wait, but receives a response immediately. This method `createJob` in `JobService` creates a [o.d.c.model.CheckJob](src/main/java/org/dm/conveyor/model/CheckJob.java) with the status `CREATED` and saves it in the database. A [o.d.c.model.JobEvent](src/main/java/org/dm/conveyor/model/JobEvent.java) is then sent to [event streaming platform Kafka](https://kafka.apache.org/). 
+If a new check is requested, the controller calls the method `createJob` in the `JobService`. The check is not started directly. The check is only triggered by the Kafka event. This has the advantage that the caller of the REST endpoint is not blocked and has to wait, but receives a response immediately. This method `createJob` in `JobService` creates a [o.d.c.model.CheckJob](src/main/java/org/dm/conveyor/model/Job.java) with the status `CREATED` and saves it in the database. A [o.d.c.model.JobEvent](src/main/java/org/dm/conveyor/model/JobEvent.java) is then sent to [event streaming platform Kafka](https://kafka.apache.org/). 
 
-The `jobEvents` are consumed by the [o.d.c.kafka.kafkaKafkaTopicListener](src/main/java/org/dm/conveyor/kafka/KafkaTopicListener.java). After receiving the event, the `KafkaTopicListener` set the status of the `Job` to `RUNNING` and starts the job by calling the `executeJob` method in the [o.d.c.service.JobExecutionService](src/main/java/org/dm/conveyor/service/JobExecutionService.java).
+The `jobEvents` are consumed by the [o.d.c.kafka.KafkaTopicListener](src/main/java/org/dm/conveyor/kafka/KafkaTopicListener.java). After receiving the event, the `KafkaTopicListener` set the status of the `Job` to `RUNNING` and starts the job by calling the `executeJob` method in the [o.d.c.service.JobExecutionService](src/main/java/org/dm/conveyor/service/JobExecutionService.java).
 
 After the job is finished in the `JobExecutionService` is completed, an [o.d.c.model.JobResultEvent](src/main/java/org/dm/conveyor/model/JobResultEvent.java) is sent to Kafka. The `JobResultEvent` is consumed by the `KafkaTopicListener`. The `KafkaTopicListener` takes the result of the check from the event and saves it in the `Job` The status of the job is set to `FINISHED`. Now the result of the job can be loaded from the client via the REST endpoint `GET /jobs/<UUID>`.
 
@@ -128,4 +128,4 @@ With the articles in this section you can learn more about frameworks and system
 
 Daniel Murygin - [linkedin.com/in/murygin](https://www.linkedin.com/in/murygin/) - daniel.murygin@gmail.com
 
-Project Link: [https://github.com/murygin/malware-scanner](https://github.com/murygin/malware-scanner)
+Project Link: [https://github.com/murygin/conveyor](https://github.com/murygin/malware-scanner)
