@@ -1,0 +1,4 @@
+name: localhost
+variables:
+  - name: server
+    value: localhost:8080

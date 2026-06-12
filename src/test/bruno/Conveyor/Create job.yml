@@ -1,0 +1,45 @@
+info:
+  name: Create job
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://{{server}}/jobs
+  body:
+    type: json
+    data: |-
+      {
+        "data": "conveyor.wait.ms=3500",
+        "type": "slacker"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: bru.setVar("waitTimeMs", Math.floor(Math.random() * 5000));
+    - type: after-response
+      code: |-
+        // Extract and save data from response
+        const body = res.getBody();
+        if (res.getStatus() === 202) {
+          bru.setVar("jobId", body.id);
+          console.log("Job ID is: " + body.id);
+        }
+    - type: tests
+      code: |-
+        test("should return success", function () {
+          expect(res.getStatus()).to.equal(202);
+        });
+        test("should return job data", function () {
+          const body = res.getBody();
+          expect(body).to.have.property("state");
+          expect(body).to.have.property("id");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
