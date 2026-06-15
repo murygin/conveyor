@@ -55,6 +55,7 @@ public class Job implements Serializable {
         return state;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public Job setState(Job.StateEnum status) {
         this.state = status;
         return this;
@@ -69,6 +70,7 @@ public class Job implements Serializable {
         return this;
     }
 
+    @SuppressWarnings("unused")
     public Set<JobResult> getResults() {
         return results;
     }

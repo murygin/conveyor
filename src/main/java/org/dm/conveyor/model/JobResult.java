@@ -46,19 +46,23 @@ public class JobResult implements Serializable {
         return this;
     }
 
+    @SuppressWarnings("unused")
     public JobResultEvent.StateEnum getState() {
         return state;
     }
 
+    @SuppressWarnings("unused")
     public JobResult setState(JobResultEvent.StateEnum status) {
         this.state = status;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public String getDetails() {
         return details;
     }
 
+    @SuppressWarnings("unused")
     public JobResult setDetails(String details) {
         this.details = details;
         return this;

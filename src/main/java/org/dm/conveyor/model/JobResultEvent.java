@@ -54,6 +54,7 @@ public class JobResultEvent implements Serializable {
         return state;
     }
 
+    @SuppressWarnings("unused")
     public JobResultEvent setState(StateEnum status) {
         this.state = status;
         return this;
@@ -63,6 +64,7 @@ public class JobResultEvent implements Serializable {
         return details;
     }
 
+    @SuppressWarnings("unused")
     public JobResultEvent setDetails(String details) {
         this.details = details;
         return this;
@@ -72,6 +74,7 @@ public class JobResultEvent implements Serializable {
         return jobID;
     }
 
+    @SuppressWarnings("unused")
     public JobResultEvent setJobID(String jobID) {
         this.jobID = jobID;
         return this;

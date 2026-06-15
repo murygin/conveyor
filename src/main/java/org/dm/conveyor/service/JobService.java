@@ -65,6 +65,7 @@ public class JobService {
      * @param job The check job to update
      * @return The updated check job
      */
+    @SuppressWarnings("UnusedReturnValue")
     public Job updateJob(Job job) {
         return jobRepository.save(job);
     }
