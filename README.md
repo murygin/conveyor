@@ -44,7 +44,7 @@ You can use the Bruno collection in folder [src/test/bruno/Conveyor](./src/test/
 
 #### `POST /jobs`
 
-Starts the check of a PDF file. The PDFs are checked asynchronously. The result is not returned directly in the response. The response contains a confirmation of the start with the ID of the check. The response header `Location` contains the URL for loading the result.
+Starts ta new check job. The result is not returned directly in the response. The response contains a confirmation of the start with the ID of the job. The response header `Location` contains the URL for loading the result.
 
 Request:
 ```json
@@ -66,7 +66,7 @@ Response:
 
 #### `GET /jobs/<UUID>`
 
-Loads the result of checking a PDF file. The PDFs are checked asynchronously. If the check has not yet been started, the status `CREATED` is returned. If the check is currently running, the status `RUNNING` is returned. When the check is completed, the status `FINISHED` and a result is returned.
+Loads the result of a check job. If the job has not yet been started, the status `CREATED` is returned. If the job is currently running, the status `RUNNING` is returned. When the job is completed, the status `FINISHED` and a result is returned.
 
 Response:
 - Status: `200 OK`
@@ -83,7 +83,6 @@ Response:
    "id": "b3a5896f-387b-4363-a631-cfbf467db1ce"
 }
 ```
-
 
 ## How it works
 
