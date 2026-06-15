@@ -1,13 +1,17 @@
 package org.dm.conveyor.rest;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.dm.conveyor.model.JobEvent;
 import org.dm.conveyor.model.Job;
+import org.dm.conveyor.model.JobEvent;
 import org.dm.conveyor.model.JobNotFoundException;
 import org.dm.conveyor.model.UUIDNotValidException;
 import org.dm.conveyor.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 

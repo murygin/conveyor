@@ -1,11 +1,11 @@
 package org.dm.conveyor.kafka;
 
 import org.dm.conveyor.KafkaConfiguration;
-import org.dm.conveyor.model.JobEvent;
 import org.dm.conveyor.model.Job;
+import org.dm.conveyor.model.JobEvent;
 import org.dm.conveyor.model.JobResultEvent;
-import org.dm.conveyor.service.JobService;
 import org.dm.conveyor.service.JobExecutionService;
+import org.dm.conveyor.service.JobService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

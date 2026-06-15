@@ -9,12 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 
 @Service
 public class JobExecutionService {
@@ -48,7 +42,7 @@ public class JobExecutionService {
         }
 
         kafkaProducer.sendResultEvent(null, resultEvent);
-        logger.info("File check finished, Status: {}, {}", resultEvent.getState(), resultEvent.getDetails());
+        logger.info("Job execution finished, Status: {}, {}", resultEvent.getState(), resultEvent.getDetails());
     }
 
     private long getWaitTimeParameter(JobEvent jobEvent) {
@@ -73,7 +67,7 @@ public class JobExecutionService {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        logger.info("Woke up after {} ms", millis);
+        logger.debug("Woke up after {} ms", millis);
     }
 
 

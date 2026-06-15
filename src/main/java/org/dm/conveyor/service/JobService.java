@@ -1,8 +1,8 @@
 package org.dm.conveyor.service;
 
 import org.dm.conveyor.kafka.KafkaProducerService;
-import org.dm.conveyor.model.JobEvent;
 import org.dm.conveyor.model.Job;
+import org.dm.conveyor.model.JobEvent;
 import org.dm.conveyor.model.JobResultEvent;
 import org.dm.conveyor.model.Transformer;
 import org.dm.conveyor.repository.JobRepository;
