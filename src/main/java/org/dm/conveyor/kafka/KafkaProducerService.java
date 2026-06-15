@@ -14,9 +14,12 @@ public class KafkaProducerService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerService.class);
 
-    @Autowired
-    KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
+    @Autowired
+    public KafkaProducerService(KafkaTemplate<String, Object> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     public void sendCheckEvent(String key, JobEvent value) {
         sendEvent(KafkaConfiguration.TOPIC_CHECK_FILE, key, value);

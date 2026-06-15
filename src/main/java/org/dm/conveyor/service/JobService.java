@@ -25,11 +25,14 @@ public class JobService {
 
     private final Logger logger = LoggerFactory.getLogger(JobService.class);
 
-    @Autowired
-    JobRepository jobRepository;
+    private final JobRepository jobRepository;
+    private final KafkaProducerService kafkaProducer;
 
     @Autowired
-    KafkaProducerService kafkaProducer;
+    public JobService( JobRepository jobRepository, KafkaProducerService kafkaProducer) {
+        this.jobRepository = jobRepository;
+        this.kafkaProducer = kafkaProducer;
+    }
 
     /**
      * Creates a new job with the given event.

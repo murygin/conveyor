@@ -22,8 +22,12 @@ public class JobController {
 
     public static final String URL_JOBS = "/jobs";
 
+    private final JobService jobService;
+
     @Autowired
-    JobService jobService;
+    public JobController(JobService jobService) {
+        this.jobService = jobService;
+    }
 
     /**
      * Creates a new job with the given event.

@@ -19,11 +19,14 @@ public class KafkaTopicListener {
 
     private final Logger logger = LoggerFactory.getLogger(KafkaTopicListener.class);
 
-    @Autowired
-    JobService jobService;
+    private final JobService jobService;
+    private final JobExecutionService jobExecutionService;
 
     @Autowired
-    JobExecutionService jobExecutionService;
+    public KafkaTopicListener(JobService jobService, JobExecutionService jobExecutionService) {
+        this.jobService = jobService;
+        this.jobExecutionService = jobExecutionService;
+    }
 
     @KafkaHandler
     public void handleCheckMessage(JobEvent jobEvent) {

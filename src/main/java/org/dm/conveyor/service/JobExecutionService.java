@@ -24,8 +24,12 @@ public class JobExecutionService {
     @Value("${conveyor.wait.ms:0}")
     private long waitTimeInMs = 0;
 
-    @Autowired
     KafkaProducerService kafkaProducer;
+
+    @Autowired
+    public JobExecutionService(KafkaProducerService kafkaProducer) {
+        this.kafkaProducer = kafkaProducer;
+    }
 
     public void executeJob(JobEvent jobEvent) {
         long startTime = System.currentTimeMillis();
