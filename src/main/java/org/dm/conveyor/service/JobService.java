@@ -17,7 +17,7 @@ import java.util.Optional;
  * The JobExecutionService is the service class with business logic for the Job entity.
  * It provides methods to create, read and update check jobs and also methods
  * to update the state of a check job and to add results to a check job.
- *
+ * <p>
  * JobService does not execute the jobs. It only manages their status.
  */
 @Service
@@ -29,7 +29,7 @@ public class JobService {
     private final KafkaProducerService kafkaProducer;
 
     @Autowired
-    public JobService( JobRepository jobRepository, KafkaProducerService kafkaProducer) {
+    public JobService(JobRepository jobRepository, KafkaProducerService kafkaProducer) {
         this.jobRepository = jobRepository;
         this.kafkaProducer = kafkaProducer;
     }
@@ -45,7 +45,7 @@ public class JobService {
     public Job createJob(JobEvent jobEvent) {
         Job job = jobRepository.save(new Job(Job.StateEnum.CREATED, jobEvent.getId()));
         logStatus(job.getID(), job.getState());
-        kafkaProducer.sendCheckEvent( null, jobEvent);
+        kafkaProducer.sendCheckEvent(null, jobEvent);
         return job;
     }
 
@@ -72,12 +72,12 @@ public class JobService {
     /**
      * Adds a result to the check job with the given UUID.
      *
-     * @param ID The UUID of the job
+     * @param ID             The UUID of the job
      * @param jobResultEvent The check result event to add
      */
     public void addResult(String ID, JobResultEvent jobResultEvent) {
         Optional<Job> checkJobOptional = getJob(ID);
-        if(checkJobOptional.isPresent()) {
+        if (checkJobOptional.isPresent()) {
             Job job = checkJobOptional.get();
             job.addResult(Transformer.createCheckResult(jobResultEvent));
             updateJob(job);
@@ -87,12 +87,12 @@ public class JobService {
     /**
      * Updates the state of the check job with the given UUID.
      *
-     * @param ID The UUID of the job
+     * @param ID    The UUID of the job
      * @param state The new state of the job
      */
     public void updateState(String ID, Job.StateEnum state) {
         Optional<Job> checkJobOptional = getJob(ID);
-        if(checkJobOptional.isPresent()) {
+        if (checkJobOptional.isPresent()) {
             Job job = checkJobOptional.get();
             job.setState(state);
             updateJob(job);

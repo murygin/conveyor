@@ -45,12 +45,12 @@ public class JobController {
      */
     @PostMapping(URL_JOBS)
     Job create(@RequestBody JobEvent jobEvent, HttpServletResponse response) {
-        if(jobEvent.getId()==null) {
+        if (jobEvent.getId() == null) {
             jobEvent.setId(UUID.randomUUID().toString());
         } else {
             validateUUID(jobEvent.getId());
         }
-        response.setHeader("Location", String.format("%s/%s",URL_JOBS, jobEvent.getId()));
+        response.setHeader("Location", String.format("%s/%s", URL_JOBS, jobEvent.getId()));
         response.setStatus(HttpServletResponse.SC_ACCEPTED);
         return jobService.createJob(jobEvent);
     }

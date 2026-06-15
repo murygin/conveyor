@@ -17,11 +17,15 @@ public class JobResult implements Serializable {
 
     private JobResultEvent.StateEnum state;
 
-    /** The name of the check. */
+    /**
+     * The name of the check.
+     */
     private String name;
 
-    /** Result details from the check. */
-    @Column(length=4096)
+    /**
+     * Result details from the check.
+     */
+    @Column(length = 4096)
     private String details;
 
     public JobResult() {

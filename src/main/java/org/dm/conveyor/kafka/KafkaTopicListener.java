@@ -14,7 +14,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@KafkaListener(topics = {KafkaConfiguration.TOPIC_CHECK_FILE,KafkaConfiguration.TOPIC_CHECK_RESULT}, groupId = "check-file-group")
+@KafkaListener(topics = {KafkaConfiguration.TOPIC_CHECK_FILE, KafkaConfiguration.TOPIC_CHECK_RESULT}, groupId = "check-file-group")
 public class KafkaTopicListener {
 
     private final Logger logger = LoggerFactory.getLogger(KafkaTopicListener.class);
@@ -39,7 +39,7 @@ public class KafkaTopicListener {
     @KafkaHandler
     public void handleResultMessage(JobResultEvent resultEvent) {
         logger.info("Result event is received: {}", resultEvent);
-        jobService.addResult(resultEvent.getJobID(),resultEvent);
+        jobService.addResult(resultEvent.getJobID(), resultEvent);
         jobService.updateState(resultEvent.getJobID(), Job.StateEnum.FINISHED);
     }
 }

@@ -48,12 +48,11 @@ public class JobExecutionService {
     private long getWaitTimeParameter(JobEvent jobEvent) {
         long waitTime = waitTimeInMs;
         String data = jobEvent.getData();
-        if(data!=null && data.startsWith("conveyor.wait.ms=")) {
+        if (data != null && data.startsWith("conveyor.wait.ms=")) {
             String parameterValue = data.substring("conveyor.wait.ms=".length());
             try {
                 waitTime = Long.parseLong(parameterValue);
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 logger.error("Invalid wait time format in job event data: {}", parameterValue);
             }
         }

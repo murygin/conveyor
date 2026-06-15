@@ -19,10 +19,14 @@ public class JobResultEvent implements Serializable {
 
     private StateEnum state;
 
-    /** The name of the check. */
+    /**
+     * The name of the check.
+     */
     private String name;
 
-    /** Result details from the check. */
+    /**
+     * Result details from the check.
+     */
     private String details;
 
     private String jobID;
@@ -64,7 +68,9 @@ public class JobResultEvent implements Serializable {
         return this;
     }
 
-    public String getJobID() { return jobID; }
+    public String getJobID() {
+        return jobID;
+    }
 
     public JobResultEvent setJobID(String jobID) {
         this.jobID = jobID;
@@ -72,6 +78,6 @@ public class JobResultEvent implements Serializable {
     }
 
     public String toString() {
-        return String.format("CheckResultEvent{jobID='%s',name='%s',state=%s}",jobID,name,state);
+        return String.format("CheckResultEvent{jobID='%s',name='%s',state=%s}", jobID, name, state);
     }
 }
