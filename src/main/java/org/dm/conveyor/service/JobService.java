@@ -44,7 +44,7 @@ public class JobService {
      */
     public Job createJob(JobEvent jobEvent) {
         Job job = jobRepository.save(new Job(Job.StateEnum.CREATED, jobEvent.getId()));
-        logStatus(job.getID(), job.getState());
+        logStatus(job.getId(), job.getState());
         kafkaProducer.sendCheckEvent(null, jobEvent);
         return job;
     }
@@ -52,11 +52,11 @@ public class JobService {
     /**
      * Returns the job with the given UUID.
      *
-     * @param ID The UUID of the job
+     * @param id The UUID of the job
      * @return The job with the given UUID
      */
-    public Optional<Job> getJob(String ID) {
-        return jobRepository.findById(ID);
+    public Optional<Job> getJob(String id) {
+        return jobRepository.findById(id);
     }
 
     /**
@@ -72,11 +72,11 @@ public class JobService {
     /**
      * Adds a result to the check job with the given UUID.
      *
-     * @param ID             The UUID of the job
+     * @param id             The UUID of the job
      * @param jobResultEvent The check result event to add
      */
-    public void addResult(String ID, JobResultEvent jobResultEvent) {
-        Optional<Job> checkJobOptional = getJob(ID);
+    public void addResult(String id, JobResultEvent jobResultEvent) {
+        Optional<Job> checkJobOptional = getJob(id);
         if (checkJobOptional.isPresent()) {
             Job job = checkJobOptional.get();
             job.addResult(Transformer.createCheckResult(jobResultEvent));
@@ -87,22 +87,22 @@ public class JobService {
     /**
      * Updates the state of the check job with the given UUID.
      *
-     * @param ID    The UUID of the job
+     * @param id    The UUID of the job
      * @param state The new state of the job
      */
-    public void updateState(String ID, Job.StateEnum state) {
-        Optional<Job> checkJobOptional = getJob(ID);
+    public void updateState(String id, Job.StateEnum state) {
+        Optional<Job> checkJobOptional = getJob(id);
         if (checkJobOptional.isPresent()) {
             Job job = checkJobOptional.get();
             job.setState(state);
             updateJob(job);
-            logStatus(ID, state);
+            logStatus(id, state);
         }
     }
 
-    private void logStatus(String ID, Job.StateEnum status) {
+    private void logStatus(String id, Job.StateEnum status) {
         if (logger.isInfoEnabled()) {
-            logger.info("Set status of check job {} to {}", ID, status);
+            logger.info("Set status of check job {} to {}", id, status);
         }
     }
 

@@ -13,7 +13,7 @@ public class JobResult implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String ID;
+    private String id;
 
     private JobResultEvent.StateEnum state;
 

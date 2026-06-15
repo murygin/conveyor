@@ -29,7 +29,7 @@ public class Job implements Serializable {
     private Job.StateEnum state;
 
     @Id
-    private String ID;
+    private String id;
 
     @OneToMany(
             cascade = CascadeType.ALL,
@@ -41,14 +41,14 @@ public class Job implements Serializable {
     public Job() {
     }
 
-    public Job(String ID) {
+    public Job(String id) {
         this.state = StateEnum.CREATED;
-        this.ID = ID;
+        this.id = id;
     }
 
-    public Job(Job.StateEnum state, String ID) {
+    public Job(Job.StateEnum state, String id) {
         this.state = state;
-        this.ID = ID;
+        this.id = id;
     }
 
     public Job.StateEnum getState() {
@@ -60,13 +60,12 @@ public class Job implements Serializable {
         return this;
     }
 
-
-    public String getID() {
-        return ID;
+    public String getId() {
+        return id;
     }
 
-    public Job setID(String ID) {
-        this.ID = ID;
+    public Job setId(String id) {
+        this.id = id;
         return this;
     }
 
@@ -81,19 +80,19 @@ public class Job implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Job job)) return false;
-        return state == job.state && Objects.equals(ID, job.ID);
+        return state == job.state && Objects.equals(id, job.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(state, ID);
+        return Objects.hash(state, id);
     }
 
     @Override
     public String toString() {
         return "CheckJob{" +
                 "state=" + state +
-                ", ID='" + ID + '\'' +
+                ", ID='" + id + '\'' +
                 '}';
     }
 }

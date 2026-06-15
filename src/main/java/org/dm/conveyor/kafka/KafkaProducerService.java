@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducerService {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerService.class);
+    private final Logger logger = LoggerFactory.getLogger(KafkaProducerService.class);
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -37,7 +37,7 @@ public class KafkaProducerService {
             } else {
                 future.complete(sendResult);
             }
-            LOGGER.info("Event send to Kafka topic {}: {}", topic, value);
+            logger.info("Event send to Kafka topic {}: {}", topic, value);
         });
     }
 }
