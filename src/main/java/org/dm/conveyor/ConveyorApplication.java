@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MalwareScannerApplication {
+public class ConveyorApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MalwareScannerApplication.class, args);
+        SpringApplication.run(ConveyorApplication.class, args);
     }
 
 }
