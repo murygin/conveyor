@@ -42,7 +42,7 @@ public class JobExecutionService {
         }
 
         kafkaProducer.sendResultEvent(null, resultEvent);
-        logger.info("Job execution finished, Status: {}, {}", resultEvent.getState(), resultEvent.getDetails());
+        logger.info("Job {} execution finished, Status: {}, {}", jobEvent.getId(), resultEvent.getState(), resultEvent.getDetails());
     }
 
     private long getWaitTimeParameter(JobEvent jobEvent) {
