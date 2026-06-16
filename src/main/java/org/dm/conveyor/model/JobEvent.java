@@ -5,8 +5,6 @@ import java.util.Objects;
 
 public class JobEvent implements Serializable {
 
-    public static final String HEADER_REQUESTER_SERVICE = "requester_service";
-
     private String id;
 
     private String data;
@@ -40,15 +38,18 @@ public class JobEvent implements Serializable {
         return data;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public JobEvent setData(String data) {
         this.data = data;
         return this;
     }
 
+    @SuppressWarnings("unused")
     public String getType() {
         return type;
     }
 
+    @SuppressWarnings("unused")
     public JobEvent setType(String type) {
         this.type = type;
         return this;
