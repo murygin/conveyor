@@ -111,6 +111,8 @@ With the articles in this section you can learn more about frameworks and system
 - [Run Kafka Streams Demo Application](https://kafka.apache.org/documentation/streams/quickstart)
 - [Is a Key Required as Part of Sending Messages to Kafka?](https://www.baeldung.com/java-kafka-message-key)
 - [What should I use as the key for my Kafka message?](https://forum.confluent.io/t/what-should-i-use-as-the-key-for-my-kafka-message/312/2)
+- [Kafka Integration Testing with Spring Boot](https://tech4gods.com/kafka-integration-testing-with-spring-boot/)
+- [Testing Kafka and Spring Boot](https://www.baeldung.com/spring-boot-kafka-testing)
 
 **API Design**
 - [REST API Design for Long-Running Tasks](https://restfulapi.net/rest-api-design-for-long-running-tasks/)
