@@ -20,12 +20,12 @@ public class JobResultEvent implements Serializable {
     private StateEnum state;
 
     /**
-     * The name of the check.
+     * The name of the job.
      */
     private String name;
 
     /**
-     * Result details from the check.
+     * Result details from the job.
      */
     private String details;
 

@@ -12,7 +12,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(JobNotFoundException.class)
     @ResponseStatus(org.springframework.http.HttpStatus.NOT_FOUND)
-    public String handleCheckJobNotFoundException(JobNotFoundException e) {
+    public String handleJobNotFoundException(JobNotFoundException e) {
         return e.getMessage();
     }
 

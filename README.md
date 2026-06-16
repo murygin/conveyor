@@ -34,7 +34,7 @@ Kafka runs with [Docker Compose](https://docs.docker.com/compose/), which is int
    
 ### Usage
 
-The API provides an endpoint for starting the check of a PDF file and an endpoint for loading the result. If the service is started with `./mvnw spring-boot:run` the base url is http://localhost:8080.
+The API provides an endpoint for starting jobs and an endpoint for loading the job results. If the service is started with `./mvnw spring-boot:run` the base url is http://localhost:8080.
 
 #### Bruno
 
@@ -44,7 +44,7 @@ You can use the Bruno collection in folder [src/test/bruno/Conveyor](./src/test/
 
 #### `POST /jobs`
 
-Starts ta new check job. The result is not returned directly in the response. The response contains a confirmation of the start with the ID of the job. The response header `Location` contains the URL for loading the result.
+Starts ta new job. The job is started asynchronously. The result is not returned directly in the response. The response contains a confirmation of the start with the ID of the job. The response header `Location` contains the URL for loading the result.
 
 Request:
 ```json
@@ -66,7 +66,7 @@ Response:
 
 #### `GET /jobs/<UUID>`
 
-Loads the result of a check job. If the job has not yet been started, the status `CREATED` is returned. If the job is currently running, the status `RUNNING` is returned. When the job is completed, the status `FINISHED` and a result is returned.
+Loads the result of a job. If the job has not yet been started, the status `CREATED` is returned. If the job is currently running, the status `RUNNING` is returned. When the job is completed, the status `FINISHED` and a result is returned.
 
 Response:
 - Status: `200 OK`
@@ -86,13 +86,13 @@ Response:
 
 ## How it works
 
-The REST endpoint `POST /jobs` can be used to trigger a PDF file check. When the endpoint is called, the method `create` is called in the controller. The Spring Boot REST Controller [o.d.c.rest.JobsController](./src/main/java/org/dm/conveyor/rest/JobController.java) contains the methods that are executed when the endpoints are called. The controller is only a facade and passes the calls on to the [o.d.c.service.CheckJobService](src/main/java/org/dm/conveyor/service/JobService.java). 
+The REST endpoint `POST /jobs` can be used to trigger a new job. When the endpoint is called, the method `create` is called in the controller. The Spring Boot REST Controller [o.d.c.rest.JobsController](./src/main/java/org/dm/conveyor/rest/JobController.java) contains the methods that are executed when the endpoints are called. The controller is only a facade and passes the calls on to the [o.d.c.service.JobService](src/main/java/org/dm/conveyor/service/JobService.java). 
 
-If a new check is requested, the controller calls the method `createJob` in the `JobService`. The check is not started directly. The check is only triggered by the Kafka event. This has the advantage that the caller of the REST endpoint is not blocked and has to wait, but receives a response immediately. This method `createJob` in `JobService` creates a [o.d.c.model.CheckJob](src/main/java/org/dm/conveyor/model/Job.java) with the status `CREATED` and saves it in the database. A [o.d.c.model.JobEvent](src/main/java/org/dm/conveyor/model/JobEvent.java) is then sent to [event streaming platform Kafka](https://kafka.apache.org/). 
+If a new job is requested, the controller calls the method `createJob` in the `JobService`. The job is not started directly. The job is only triggered by the Kafka event. This has the advantage that the caller of the REST endpoint is not blocked and has to wait, but receives a response immediately. This method `createJob` in `JobService` creates a [o.d.c.model.Job](src/main/java/org/dm/conveyor/model/Job.java) with the status `CREATED` and saves it in the database. A [o.d.c.model.JobEvent](src/main/java/org/dm/conveyor/model/JobEvent.java) is then sent to [event streaming platform Kafka](https://kafka.apache.org/). 
 
 The `jobEvents` are consumed by the [o.d.c.kafka.KafkaTopicListener](src/main/java/org/dm/conveyor/kafka/KafkaTopicListener.java). After receiving the event, the `KafkaTopicListener` set the status of the `Job` to `RUNNING` and starts the job by calling the `executeJob` method in the [o.d.c.service.JobExecutionService](src/main/java/org/dm/conveyor/service/JobExecutionService.java).
 
-After the job is finished in the `JobExecutionService` is completed, an [o.d.c.model.JobResultEvent](src/main/java/org/dm/conveyor/model/JobResultEvent.java) is sent to Kafka. The `JobResultEvent` is consumed by the `KafkaTopicListener`. The `KafkaTopicListener` takes the result of the check from the event and saves it in the `Job` The status of the job is set to `FINISHED`. Now the result of the job can be loaded from the client via the REST endpoint `GET /jobs/<UUID>`.
+After the job is finished in the `JobExecutionService` is completed, an [o.d.c.model.JobResultEvent](src/main/java/org/dm/conveyor/model/JobResultEvent.java) is sent to Kafka. The `JobResultEvent` is consumed by the `KafkaTopicListener`. The `KafkaTopicListener` takes the result of the job from the event and saves it in the `Job` The status of the job is set to `FINISHED`. Now the result of the job can be loaded from the client via the REST endpoint `GET /jobs/<UUID>`.
 
 ## Improvements & Enhancements
 

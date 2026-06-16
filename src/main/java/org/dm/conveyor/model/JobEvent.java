@@ -67,6 +67,6 @@ public class JobEvent implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("CheckEvent{id='%s', url='%s', fileType='%s'}", id, data, type);
+        return String.format("JobEvent{id='%s', url='%s', fileType='%s'}", id, data, type);
     }
 }

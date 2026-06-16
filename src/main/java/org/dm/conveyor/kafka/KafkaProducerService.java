@@ -21,12 +21,12 @@ public class KafkaProducerService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendCheckEvent(String key, JobEvent value) {
-        sendEvent(KafkaConfiguration.TOPIC_CHECK_FILE, key, value);
+    public void sendJobEvent(String key, JobEvent value) {
+        sendEvent(KafkaConfiguration.TOPIC_JOB, key, value);
     }
 
     public void sendResultEvent(String key, JobResultEvent value) {
-        sendEvent(KafkaConfiguration.TOPIC_CHECK_RESULT, key, value);
+        sendEvent(KafkaConfiguration.TOPIC_JOB_RESULT, key, value);
     }
 
     private <T> void sendEvent(String topic, String key, T value) {

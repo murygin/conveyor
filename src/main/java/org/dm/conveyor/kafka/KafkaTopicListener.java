@@ -13,14 +13,19 @@ import org.springframework.kafka.annotation.KafkaHandler;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.CountDownLatch;
+
 @Component
-@KafkaListener(topics = {KafkaConfiguration.TOPIC_CHECK_FILE, KafkaConfiguration.TOPIC_CHECK_RESULT}, groupId = "check-file-group")
+@KafkaListener(topics = {KafkaConfiguration.TOPIC_JOB, KafkaConfiguration.TOPIC_JOB_RESULT}, groupId = "check-file-group")
 public class KafkaTopicListener {
 
     private final Logger logger = LoggerFactory.getLogger(KafkaTopicListener.class);
 
     private final JobService jobService;
     private final JobExecutionService jobExecutionService;
+
+    private CountDownLatch countDownLatchJob = new CountDownLatch(1);
+    private CountDownLatch countDownLatchResult = new CountDownLatch(1);
 
     @Autowired
     public KafkaTopicListener(JobService jobService, JobExecutionService jobExecutionService) {
@@ -29,17 +34,32 @@ public class KafkaTopicListener {
     }
 
     @KafkaHandler
-    public void handleCheckMessage(JobEvent jobEvent) {
-        logger.info("Check event is received: {}", jobEvent);
+    public void handleJobMessage(JobEvent jobEvent) {
+        logger.info("Job event is received: {}", jobEvent);
         jobService.updateState(jobEvent.getId(), Job.StateEnum.RUNNING);
-        logger.info("Starting file check for: {}", jobEvent);
+        countDownLatchJob.countDown();
+        logger.info("Starting job for: {}", jobEvent);
         jobExecutionService.executeJob(jobEvent);
     }
 
     @KafkaHandler
-    public void handleResultMessage(JobResultEvent resultEvent) {
+    public void handleJobResultMessage(JobResultEvent resultEvent) {
         logger.info("Result event is received: {}", resultEvent);
         jobService.addResult(resultEvent.getJobID(), resultEvent);
         jobService.updateState(resultEvent.getJobID(), Job.StateEnum.FINISHED);
+        countDownLatchResult.countDown();
+    }
+
+    public void resetLatches() {
+        countDownLatchJob = new CountDownLatch(1);
+        countDownLatchResult = new CountDownLatch(1);
+    }
+
+    public CountDownLatch getCountDownLatchJob() {
+        return countDownLatchJob;
+    }
+
+    public CountDownLatch getCountDownLatchResult() {
+        return countDownLatchResult;
     }
 }

@@ -92,7 +92,7 @@ public class Job implements Serializable {
 
     @Override
     public String toString() {
-        return "CheckJob{" +
+        return "Job{" +
                 "state=" + state +
                 ", ID='" + id + '\'' +
                 '}';

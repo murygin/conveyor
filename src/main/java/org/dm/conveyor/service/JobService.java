@@ -15,8 +15,8 @@ import java.util.Optional;
 
 /**
  * The JobExecutionService is the service class with business logic for the Job entity.
- * It provides methods to create, read and update check jobs and also methods
- * to update the state of a check job and to add results to a check job.
+ * It provides methods to create, read and update jobs and also methods
+ * to update the state of a job and to add results to a job.
  * <p>
  * JobService does not execute the jobs. It only manages their status.
  */
@@ -45,7 +45,7 @@ public class JobService {
     public Job createJob(JobEvent jobEvent) {
         Job job = jobRepository.save(new Job(Job.StateEnum.CREATED, jobEvent.getId()));
         logStatus(job.getId(), job.getState());
-        kafkaProducer.sendCheckEvent(null, jobEvent);
+        kafkaProducer.sendJobEvent(null, jobEvent);
         return job;
     }
 
@@ -60,10 +60,10 @@ public class JobService {
     }
 
     /**
-     * Updates the given check job.
+     * Updates the given job.
      *
-     * @param job The check job to update
-     * @return The updated check job
+     * @param job The job to update
+     * @return The updated job
      */
     @SuppressWarnings("UnusedReturnValue")
     public Job updateJob(Job job) {
@@ -71,30 +71,30 @@ public class JobService {
     }
 
     /**
-     * Adds a result to the check job with the given UUID.
+     * Adds a result to the job with the given UUID.
      *
      * @param id             The UUID of the job
-     * @param jobResultEvent The check result event to add
+     * @param jobResultEvent The result event to add
      */
     public void addResult(String id, JobResultEvent jobResultEvent) {
-        Optional<Job> checkJobOptional = getJob(id);
-        if (checkJobOptional.isPresent()) {
-            Job job = checkJobOptional.get();
-            job.addResult(Transformer.createCheckResult(jobResultEvent));
+        Optional<Job> jobOptional = getJob(id);
+        if (jobOptional.isPresent()) {
+            Job job = jobOptional.get();
+            job.addResult(Transformer.createJobResult(jobResultEvent));
             updateJob(job);
         }
     }
 
     /**
-     * Updates the state of the check job with the given UUID.
+     * Updates the state of the job with the given UUID.
      *
      * @param id    The UUID of the job
      * @param state The new state of the job
      */
     public void updateState(String id, Job.StateEnum state) {
-        Optional<Job> checkJobOptional = getJob(id);
-        if (checkJobOptional.isPresent()) {
-            Job job = checkJobOptional.get();
+        Optional<Job> jobOptional = getJob(id);
+        if (jobOptional.isPresent()) {
+            Job job = jobOptional.get();
             job.setState(state);
             updateJob(job);
             logStatus(id, state);
@@ -103,7 +103,7 @@ public class JobService {
 
     private void logStatus(String id, Job.StateEnum status) {
         if (logger.isInfoEnabled()) {
-            logger.info("Set status of check job {} to {}", id, status);
+            logger.info("Set status of job {} to {}", id, status);
         }
     }
 
