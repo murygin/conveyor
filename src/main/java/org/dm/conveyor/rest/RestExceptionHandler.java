@@ -17,8 +17,8 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(UUIDNotValidException.class)
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public String handleCheckJobNotFoundException(UUIDNotValidException e) {
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
+    public String handleUUIDNotValidException(UUIDNotValidException e) {
         return e.getMessage();
     }
 
